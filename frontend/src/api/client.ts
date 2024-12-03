@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // Base Axios instance with configuration
 const API = axios.create({
-  baseURL: 'https://localhost:3000/api', // Replace with your actual API URL
+  baseURL: import.meta.env.VITE_REACT_APP_BACKEND_BASEURL, // Replace with your actual API URL
   headers: {
     'Content-Type': 'application/json',
   },
