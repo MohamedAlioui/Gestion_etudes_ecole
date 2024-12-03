@@ -6,7 +6,7 @@ import { Session, AttendanceRecord } from '../../types/sessions';
 import { AttendanceStats } from './AttendanceStats';
 import { StudentAttendanceRow } from './StudentAttendanceRow';
 
-const API_URL = `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}`;
+const API_URL = `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL || 'https://gestion-etudes-ecole.vercel.app'}`;
 
 interface AttendanceModalProps {
   isOpen: boolean;

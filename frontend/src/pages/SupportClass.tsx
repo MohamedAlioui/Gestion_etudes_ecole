@@ -8,7 +8,7 @@ import SearchBar from '../components/supportClass/SearchBar';
 import { SupportClass } from '../types/etude';
 import { Student } from '../types/student';
 
-const API_URL = `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}`;
+const API_URL = `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL || 'https://gestion-etudes-ecole.vercel.app'}`;
 
 const SupportClassComponent = () => {
   const [supportClasses, setSupportClasses] = useState<SupportClass[]>([]);

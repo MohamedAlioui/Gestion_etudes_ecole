@@ -63,7 +63,7 @@ const StudentModal: React.FC<StudentModalProps> = ({
 
     if (student) {
       axios
-        .put(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/eleves/${student._id}`, payload)
+        .put(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL || 'https://gestion-etudes-ecole.vercel.app'}/api/eleves/${student._id}`, payload)
         .then((response) => {
           onSubmit(response.data);
           reset();
@@ -76,7 +76,7 @@ const StudentModal: React.FC<StudentModalProps> = ({
         .finally(() => setLoading(false));
     } else {
       axios
-        .post(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/eleves`, payload)
+        .post(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL || 'https://gestion-etudes-ecole.vercel.app'}/api/eleves`, payload)
         .then((response) => {
           onSubmit(response.data);
           reset();

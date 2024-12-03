@@ -60,7 +60,7 @@ const KanbanBoard = () => {
   const fetchSessions = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/seances/kanban`);
+      const response = await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL || 'https://gestion-etudes-ecole.vercel.app'}/api/seances/kanban`);
       
       if (!response.data) {
         throw new Error('No data received from server');
@@ -137,7 +137,7 @@ const KanbanBoard = () => {
       setColumns(newColumns);
 
       // Update backend
-      const response = await axios.patch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/seances/${draggableId}/status`, {
+      const response = await axios.patch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL || 'https://gestion-etudes-ecole.vercel.app'}/api/seances/${draggableId}/status`, {
         status: destination.droppableId
       });
 

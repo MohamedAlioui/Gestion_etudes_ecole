@@ -46,7 +46,7 @@ export default function Sessions() {
   useEffect(() => {
     const fetchEnseignants = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/enseignants`);
+        const response = await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL || 'https://gestion-etudes-ecole.vercel.app'}/api/enseignants`);
         setEnseignants(response.data);
       } catch (error) {
         console.error('Error fetching enseignants:', error);

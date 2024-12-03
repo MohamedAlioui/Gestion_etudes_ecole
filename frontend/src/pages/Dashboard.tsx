@@ -37,10 +37,10 @@ const Dashboard = () => {
       try {
         setLoading(true);
         const [studentsRes, teachersRes, classesRes, financeRes] = await Promise.all([
-          axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/eleves`),
-          axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/enseignants`),
-          axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/classes`),
-          axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/finances/monthly-summary`, {
+          axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL || 'https://gestion-etudes-ecole.vercel.app'}/api/eleves`),
+          axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL || 'https://gestion-etudes-ecole.vercel.app'}/api/enseignants`),
+          axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL || 'https://gestion-etudes-ecole.vercel.app'}/api/classes`),
+          axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL || 'https://gestion-etudes-ecole.vercel.app'}/api/finances/monthly-summary`, {
             params: {
               month: new Date().getMonth() + 1,
               year: new Date().getFullYear()

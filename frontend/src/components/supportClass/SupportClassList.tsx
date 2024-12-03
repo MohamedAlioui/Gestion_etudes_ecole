@@ -73,7 +73,7 @@ const SupportClassList: React.FC<SupportClassListProps> = ({
   const fetchClasses = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/classes`);
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL || 'https://gestion-etudes-ecole.vercel.app'}/api/classes`);
       if (!response.ok) throw new Error('Failed to fetch classes');
       const data = await response.json();
       setAvailableClasses(data);
@@ -90,7 +90,7 @@ const SupportClassList: React.FC<SupportClassListProps> = ({
     
     setIsLoadingStudents(true);
     try {
-      const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/eleves/classe/${selectedClassId}`);
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL || 'https://gestion-etudes-ecole.vercel.app'}/api/eleves/classe/${selectedClassId}`);
       if (!response.ok) throw new Error('Failed to fetch available students');
       const data = await response.json();
       setAvailableStudents(data || []);
@@ -105,7 +105,7 @@ const SupportClassList: React.FC<SupportClassListProps> = ({
   const fetchStudentsForEtude = async (etudeId: string) => {
     setIsLoadingClassStudents(true);
     try {
-      const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/etudes/${etudeId}/students`);
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL || 'https://gestion-etudes-ecole.vercel.app'}/api/etudes/${etudeId}/students`);
       if (!response.ok) throw new Error('Failed to fetch students');
       const data = await response.json();
       setStudentsInClass(data);
@@ -141,7 +141,7 @@ const SupportClassList: React.FC<SupportClassListProps> = ({
   
     setIsAddingStudent(true);
     try {
-      const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/etudes/${selectedEtudeId}`);
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL || 'https://gestion-etudes-ecole.vercel.app'}/api/etudes/${selectedEtudeId}`);
       if (!response.ok) throw new Error('Failed to fetch etude class');
       
       const etudeClass: SupportClass = await response.json();
@@ -150,7 +150,7 @@ const SupportClassList: React.FC<SupportClassListProps> = ({
         eleves: [...new Set([...(etudeClass.eleves || []), ...selectedStudentIds])],
       };
 
-      const updateResponse = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/etudes/${selectedEtudeId}`, {
+      const updateResponse = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL || 'https://gestion-etudes-ecole.vercel.app'}/api/etudes/${selectedEtudeId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatePayload),
@@ -174,7 +174,7 @@ const SupportClassList: React.FC<SupportClassListProps> = ({
     if (!selectedEtudeId) return;
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/etudes/${selectedEtudeId}/students/${studentId}`, {
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL || 'https://gestion-etudes-ecole.vercel.app'}/api/etudes/${selectedEtudeId}/students/${studentId}`, {
         method: 'DELETE',
       });
 
@@ -196,7 +196,7 @@ const SupportClassList: React.FC<SupportClassListProps> = ({
     if (!confirmDelete) return;
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/etudes/${selectedEtudeId}/students`, {
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL || 'https://gestion-etudes-ecole.vercel.app'}/api/etudes/${selectedEtudeId}/students`, {
         method: 'DELETE',
       });
 

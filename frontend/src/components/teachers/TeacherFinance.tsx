@@ -47,7 +47,7 @@ function TeacherFinance({ teacherId, isOpen, onClose, teacherName, teacherPrenom
 
   const fetchEtudes = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/etudes`);
+      const response = await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL || 'https://gestion-etudes-ecole.vercel.app'}/api/etudes`);
       const filteredEtudes = response.data.filter(
         (etude: Etude) => etude.enseignant._id === teacherId
       );
@@ -103,7 +103,7 @@ function TeacherFinance({ teacherId, isOpen, onClose, teacherName, teacherPrenom
 
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/finances/enseignant/${teacherId}/etude/${selectedEtude}`,
+        `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL || 'https://gestion-etudes-ecole.vercel.app'}/api/finances/enseignant/${teacherId}/etude/${selectedEtude}`,
         {
           params: { start_date: startDate, end_date: endDate },
         }

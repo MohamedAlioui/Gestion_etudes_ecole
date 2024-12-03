@@ -3,7 +3,7 @@ import { X } from 'lucide-react';
 import { Session } from '../../types/sessions';
 import axios from 'axios';
 
-const API_URL = `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}`;
+const API_URL = `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL || 'https://gestion-etudes-ecole.vercel.app'}`;
 
 interface SessionModalProps {
   isOpen: boolean;

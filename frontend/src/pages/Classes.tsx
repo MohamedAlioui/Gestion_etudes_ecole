@@ -21,7 +21,7 @@ const Classes = () => {
 
   const fetchClasses = () => {
     axios
-      .get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/classes`)
+      .get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL || 'https://gestion-etudes-ecole.vercel.app'}/api/classes`)
       .then((response) => {
         if (Array.isArray(response.data)) {
           setClasses(response.data);
@@ -38,7 +38,7 @@ const Classes = () => {
 
   const fetchStudentsByClass = (classId: string) => {
     axios
-      .get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/eleves?classId=${classId}`)
+      .get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL || 'https://gestion-etudes-ecole.vercel.app'}/api/eleves?classId=${classId}`)
       .then((response) => {
         setStudentsByClass((prev) => ({
           ...prev,
@@ -69,7 +69,7 @@ const Classes = () => {
     if (classe._id) {
       // Si c'est une mise à jour
       axios
-        .put(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/classes/${classe._id}`, classe)
+        .put(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL || 'https://gestion-etudes-ecole.vercel.app'}/api/classes/${classe._id}`, classe)
         .then(() => {
           fetchClasses(); // Recharger les classes après la mise à jour
         })
@@ -77,7 +77,7 @@ const Classes = () => {
     } else {
       // Si c'est un ajout
       axios
-        .post(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/classes`, classe)
+        .post(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL || 'https://gestion-etudes-ecole.vercel.app'}/api/classes`, classe)
         .then(() => {
           fetchClasses(); // Recharger les classes après l'ajout
         })
@@ -92,7 +92,7 @@ const Classes = () => {
   const handleDeleteClass = (classId: string) => {
     if (window.confirm('هل أنت متأكد من حذف هذا الصف؟')) {
       axios
-        .delete(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/classes/${classId}`)
+        .delete(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL || 'https://gestion-etudes-ecole.vercel.app'}/api/classes/${classId}`)
         .then(() => {
           setClasses(classes.filter((classe) => classe._id !== classId));
           setStudentsByClass((prev) => {
