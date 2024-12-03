@@ -8,6 +8,8 @@ import ExcelImport from '../components/students/ExcelImport';
 import { Student } from '../types/student';
 import { Class } from '../types/class';
 
+const API_URL = import.meta.env.VITE_REACT_APP_BACKEND_BASEURL || 'http://localhost:3000';
+
 const Students = () => {
   const [students, setStudents] = useState<Student[]>([]);
   const [classes, setClasses] = useState<Class[]>([]);
@@ -26,7 +28,7 @@ const Students = () => {
 
   const fetchClasses = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/classes');
+      const response = await axios.get(`${API_URL}/api/classes`);
       setClasses(response.data);
     } catch (error) {
       console.error('Error fetching classes:', error);
@@ -35,7 +37,7 @@ const Students = () => {
 
   const fetchStudents = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/eleves');
+      const response = await axios.get(`${API_URL}/api/eleves`);
       setStudents(response.data);
     } catch (error) {
       console.error('Error fetching students:', error);
@@ -45,30 +47,24 @@ const Students = () => {
   const handleAddOrUpdateStudent = async (student: Student) => {
     try {
       if (student._id) {
-        // Mise à jour
-        await axios.put(`http://localhost:3000/api/eleves/${student._id}`, student);
+        await axios.put(`${API_URL}/api/eleves/${student._id}`, student);
       } else {
-        // Ajout
-        await axios.post('http://localhost:3000/api/eleves', student);
+        await axios.post(`${API_URL}/api/eleves`, student);
       }
       setIsModalOpen(false);
       setSelectedStudent(null);
-      setClassId(''); // Réinitialiser la sélection de classe
-      setSelectedFile(null); // Réinitialiser le fichier sélectionné
-      fetchStudents(); 
-  
-      // Rafraîchir la liste des élèves
+      setClassId('');
+      setSelectedFile(null);
       fetchStudents();
     } catch (error) {
       console.error('Erreur lors de l\'ajout ou de la mise à jour d\'un élève :', error);
     }
   };
-  
 
   const handleDeleteStudent = async (id: string) => {
     if (window.confirm('هل أنت متأكد من حذف هذا التلاميذ؟')) {
       try {
-        await axios.delete(`http://localhost:3000/api/eleves/${id}`);
+        await axios.delete(`${API_URL}/api/eleves/${id}`);
         setStudents((prev) => prev.filter((s) => s._id !== id));
       } catch (error) {
         console.error('Error deleting student:', error);
@@ -110,7 +106,7 @@ const Students = () => {
         classe: classId,
       }));
   
-      const response = await axios.post('http://localhost:3000/api/eleves/import', {
+      const response = await axios.post(`${API_URL}/api/eleves/import`, {
         students: studentsToImport,
         classId: classId,
       });
@@ -118,8 +114,8 @@ const Students = () => {
       if (response.status === 201) {
         alert('تم استيراد البيانات بنجاح!');
         fetchStudents();
-        setClassId(''); // Réinitialiser la sélection de classe
-        setSelectedFile(null); // Réinitialiser الملف المحدد        
+        setClassId('');
+        setSelectedFile(null);
       } else {
         throw new Error('Failed to import students');
       }
@@ -130,7 +126,6 @@ const Students = () => {
       setIsUploading(false);
     }
   };
-  
 
   const filteredStudents = students.filter((student) =>
     [student.nom_eleve, student.prenom_eleve]
