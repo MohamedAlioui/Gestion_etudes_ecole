@@ -4,10 +4,8 @@ import {
   Users,
   GraduationCap,
   School,
-  TrendingUp,
-  DollarSign
+  Clock
 } from 'lucide-react';
-import KanbanBoard from '../components/dashboard/KanbanBoard';
 
 interface DashboardStats {
   totalStudents: number;
@@ -40,19 +38,14 @@ const Dashboard = () => {
           axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL || 'https://gestion-etudes-ecole.vercel.app'}/api/eleves`),
           axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL || 'https://gestion-etudes-ecole.vercel.app'}/api/enseignants`),
           axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL || 'https://gestion-etudes-ecole.vercel.app'}/api/classes`),
-          axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL || 'https://gestion-etudes-ecole.vercel.app'}/api/finances/monthly-summary`, {
-            params: {
-              month: new Date().getMonth() + 1,
-              year: new Date().getFullYear()
-            }
-          })
+          axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL || 'https://gestion-etudes-ecole.vercel.app'}/api/seances`)
         ]);
         
         setStats({
           totalStudents: studentsRes.data.length,
           totalTeachers: teachersRes.data.length,
           totalClasses: classesRes.data.length,
-          totalRevenue: financeRes.data.totalMontant || 0,
+          totalRevenue: financeRes.data.length || 0,
           recentActivities: [
             {
               type: 'student',
@@ -89,81 +82,51 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-6 bg-gray-100 dark:bg-gray-900 min-h-screen">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-          <div className="flex items-center">
-            <div className="p-3 bg-blue-100 dark:bg-blue-900 rounded-full">
-              <Users className="h-6 w-6 text-blue-600 dark:text-blue-300" />
-            </div>
-            <div className="mr-4">
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">إجمالي الطلاب</p>
-              <p className="text-2xl font-semibold text-gray-900 dark:text-white">{stats.totalStudents}</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-          <div className="flex items-center">
-            <div className="p-3 bg-green-100 dark:bg-green-900 rounded-full">
-              <GraduationCap className="h-6 w-6 text-green-600 dark:text-green-300" />
-            </div>
-            <div className="mr-4">
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">إجمالي المعلمين</p>
-              <p className="text-2xl font-semibold text-gray-900 dark:text-white">{stats.totalTeachers}</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-          <div className="flex items-center">
-            <div className="p-3 bg-purple-100 dark:bg-purple-900 rounded-full">
-              <School className="h-6 w-6 text-purple-600 dark:text-purple-300" />
-            </div>
-            <div className="mr-4">
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">إجمالي الفصول</p>
-              <p className="text-2xl font-semibold text-gray-900 dark:text-white">{stats.totalClasses}</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-          <div className="flex items-center">
-            <div className="p-3 bg-yellow-100 dark:bg-yellow-900 rounded-full">
-              <DollarSign className="h-6 w-6 text-yellow-600 dark:text-yellow-300" />
-            </div>
-            <div className="mr-4">
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">إجمالي الإيرادات</p>
-              <p className="text-2xl font-semibold text-gray-900 dark:text-white">₪{stats.totalRevenue.toLocaleString()}</p>
-            </div>
-          </div>
-        </div>
+        <StatCard icon={<Users className="h-6 w-6 text-blue-600 dark:text-blue-300" />} label="إجمالي الطلاب" value={stats.totalStudents} />
+        <StatCard icon={<GraduationCap className="h-6 w-6 text-green-600 dark:text-green-300" />} label="إجمالي المعلمين" value={stats.totalTeachers} />
+        <StatCard icon={<School className="h-6 w-6 text-purple-600 dark:text-purple-300" />} label="إجمالي الفصول" value={stats.totalClasses} />
+        <StatCard icon={<Clock className="h-6 w-6 text-yellow-600 dark:text-yellow-300" />} label="إجمالي الحصص" value={stats.totalRevenue} />
       </div>
 
-      {/* Kanban Board */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">جدول الحصص</h3>
-        <KanbanBoard />
-      </div>
-
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">النشاطات الأخيرة</h3>
-        <div className="space-y-4">
-          {stats.recentActivities.map((activity, index) => (
-            <div key={index} className="flex items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-              <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-full">
-                <TrendingUp className="h-5 w-5 text-blue-600 dark:text-blue-300" />
-              </div>
-              <div className="mr-4">
-                <p className="text-sm font-medium text-gray-900 dark:text-white">{activity.description}</p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">{activity.time}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+      <RecentActivities activities={stats.recentActivities} />
     </div>
   );
 };
+
+// Component for displaying a statistic card
+const StatCard = ({ icon, label, value }) => (
+  <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+    <div className="flex items-center">
+      <div className="p-3 bg-blue-100 dark:bg-blue-900 rounded-full">
+        {icon}
+      </div>
+      <div className="mr-4">
+        <p className="text-sm font-medium text-gray-600 dark:text-gray-400">{label}</p>
+        <p className="text-2xl font-semibold text-gray-900 dark:text-white">{value}</p>
+      </div>
+    </div>
+  </div>
+);
+
+// Component for displaying recent activities
+const RecentActivities = ({ activities }) => (
+  <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">النشاطات الأخيرة</h3>
+    <div className="space-y-4">
+      {activities.map((activity, index) => (
+        <div key={index} className="flex items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+          <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-full">
+          </div>
+          <div className="mr-4">
+            <p className="text-sm font-medium text-gray-900 dark:text-white">{activity.description}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">{activity.time}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+);
 
 export default Dashboard;

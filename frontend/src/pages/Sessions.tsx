@@ -73,7 +73,7 @@ export default function Sessions() {
     const matchesWeek = !selectedWeek || sessionWeek === selectedWeek;
     const matchesMatiere = !selectedMatiere || session.etude.matiere === selectedMatiere;
     const matchesEtudeClass = !selectedEtudeClass || session.etude.className === selectedEtudeClass;
-    const matchesEnseignant = !selectedEnseignant || session.etude.enseignant === selectedEnseignant;
+    const matchesEnseignant = !selectedEnseignant || session.etude.enseignant.nom_enseignant === selectedEnseignant || session.etude.enseignant.prenom_enseignant === selectedEnseignant;
 
     return matchesMonth && matchesWeek && matchesMatiere && matchesEtudeClass && matchesEnseignant;
   });

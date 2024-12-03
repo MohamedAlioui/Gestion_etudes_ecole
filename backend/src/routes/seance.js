@@ -280,11 +280,22 @@ router.get('/kanban', async (req, res) => {
       })
       .sort({ date_seance: 1 });
 
-    if (!sessions) {
+    if (!sessions || sessions.length === 0) {
       return res.status(404).json({ message: 'No sessions found' });
     }
 
-    res.json(sessions);
+    const formattedSessions = sessions.map(session => ({
+      _id: session._id,
+      date_seance: session.date_seance,
+      status: session.status || 'pending',
+      etude: {
+        _id: session.etude._id,
+        matiere: session.etude.matiere,
+        enseignant: session.etude.enseignant
+      }
+    }));
+
+    res.json(formattedSessions);
   } catch (error) {
     console.error('Error fetching sessions:', error);
     res.status(500).json({ message: 'Server error while fetching sessions' });
